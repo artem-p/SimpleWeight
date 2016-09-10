@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SimpleWeight</string>
     <string name="action_settings">Настройки</string>
+    <string name="weight_input_header">Ввод</string>
+    <string name="chart_header">График</string>
+    <string name="stat_header">Статистика</string>
 </resources>
