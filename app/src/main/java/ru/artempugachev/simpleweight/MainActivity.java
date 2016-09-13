@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,17 +24,21 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText etWeightInput;
+    private Button saveButton;
+    private WeightDBOpenHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbHelper = new WeightDBOpenHelper(getApplicationContext());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         etWeightInput = (EditText) findViewById(R.id.input_weight);
-
+        saveButton = (Button) findViewById(R.id.btnSave);
+        saveButton.setOnClickListener(new SaveOnClickListener());
     }
 
     @Override
@@ -58,4 +63,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class SaveOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(getApplicationContext(), "save", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
