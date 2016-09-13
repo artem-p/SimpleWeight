@@ -7,4 +7,5 @@
     <string name="input_weight_label">Вес, </string>
     <string name="kg">кг</string>
     <string name="save">Сохранить</string>
+    <string name="wrong_weight">Неверное значение веса</string>
 </resources>

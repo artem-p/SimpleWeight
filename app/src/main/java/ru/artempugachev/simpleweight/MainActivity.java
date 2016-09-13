@@ -1,6 +1,8 @@
 package ru.artempugachev.simpleweight;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -66,7 +68,24 @@ public class MainActivity extends AppCompatActivity {
     private class SaveOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Toast.makeText(getApplicationContext(), "save", Toast.LENGTH_SHORT).show();
+            int weight;
+            String sWeight = String.valueOf(etWeightInput.getText());
+
+            if(!sWeight.equals("")) {
+                long timestamp = System.currentTimeMillis();
+                weight = Integer.parseInt(sWeight);
+                //  todo async task для записи
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(WeightDBContract.WeightEntry.COLUMN_NAME_TIME, timestamp);
+                values.put(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT, weight);
+
+                long newRowId = db.insert(WeightDBContract.WeightEntry.TABLE_NAME,
+                        null, values);
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }

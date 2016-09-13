@@ -7,4 +7,5 @@
     <string name="input_weight_label">Weight, :</string>
     <string name="kg">kg</string>
     <string name="save">Save</string>
+    <string name="wrong_weight">Wrong weight</string>
 </resources>
