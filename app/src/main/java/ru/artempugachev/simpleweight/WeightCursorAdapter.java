@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class WeightCursorAdapter extends CursorAdapter {
     public WeightCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
