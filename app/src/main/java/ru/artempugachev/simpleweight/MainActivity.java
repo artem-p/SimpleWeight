@@ -2,6 +2,7 @@ package ru.artempugachev.simpleweight;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -41,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
         etWeightInput = (EditText) findViewById(R.id.input_weight);
         saveButton = (Button) findViewById(R.id.btnSave);
         saveButton.setOnClickListener(new SaveOnClickListener());
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] weightProjection = {
+                WeightDBContract.WeightEntry._ID,
+                WeightDBContract.WeightEntry.COLUMN_NAME_TIME,
+                WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT
+        };
+
+        String weightSortOrder = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
+
+        Cursor cursor = db.query(
+                WeightDBContract.WeightEntry.TABLE_NAME,
+                weightProjection, null, null, null, null, weightSortOrder
+        );
+
+
     }
 
     @Override

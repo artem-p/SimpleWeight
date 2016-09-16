@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class WeightCursorAdapter extends CursorAdapter {
     public WeightCursorAdapter(Context context, Cursor c) {
@@ -21,6 +24,8 @@ public class WeightCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
+        TextView tvWeight = (TextView) view.findViewById(R.id.tvWeightVal);
+        String weight = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
+        tvWeight.setText(weight);
     }
 }
