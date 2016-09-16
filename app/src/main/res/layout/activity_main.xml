@@ -50,6 +50,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnSave" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weight_list"
+                >
+
+            </ListView>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
