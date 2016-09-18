@@ -17,12 +17,12 @@ public class WeightCursorAdapter extends CursorAdapter {
     // you don't bind any data to the view at this point.
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.weight_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.weight_view, parent, false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tvWeight = (TextView) view.findViewById(R.id.tvWeightVal);
+        TextView tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         String weight = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
         tvWeight.setText(weight);
     }

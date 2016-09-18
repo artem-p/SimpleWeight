@@ -1,33 +1,35 @@
 package ru.artempugachev.simpleweight;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-/**
- * Created by user on 17.09.2016.
- */
 
 public class WeightRecyclerAdapter extends RecyclerView.Adapter<WeightRecyclerAdapter.ViewHolder>{
-    //  Заглушка с фиксированными строками
-    private String[] mDataSet;
+
+    // using cursor adapter inside
+    private CursorAdapter mCursorAdapter;
+    private Context mContext;
 
 
-    // Constructor depends on the kind of dataset
-    public WeightRecyclerAdapter(String[] dataset) {
-        mDataSet = dataset;
+    // Build cursor adapter with given cursor
+    public WeightRecyclerAdapter(Context context, Cursor c) {
+        mContext = context;
+        mCursorAdapter = new WeightCursorAdapter(context, c);
     }
 
     // Create new views. Invoked by the layout manager.
     @Override
     public WeightRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.weight_view, parent, false);
+        View v = mCursorAdapter.newView(mContext, mCursorAdapter.getCursor(), parent);
 
-        ViewHolder vh = new ViewHolder((TextView) v);
-        return vh;
+        return new ViewHolder((TextView) v);
     }
 
     // Replace the contents of a view. Invoked by the layout manager
@@ -35,13 +37,14 @@ public class WeightRecyclerAdapter extends RecyclerView.Adapter<WeightRecyclerAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataSet[position]);
+        mCursorAdapter.getCursor().moveToPosition(position);
+        mCursorAdapter.bindView(holder.itemView, mContext, mCursorAdapter.getCursor());
     }
 
     // Return the size of dataset. Invoked by the layout manager
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return mCursorAdapter.getCursor().getCount();
     }
 
     // Holder for views for each data item. Complex data item

@@ -65,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         weightList.setLayoutManager(layoutManager);
 
-        RecyclerView.Adapter adapter = new WeightRecyclerAdapter(new String[]{"73", "72", "71", "73", "72", "71",
-                "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71",
-                "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71"});
+        RecyclerView.Adapter adapter = new WeightRecyclerAdapter(this, cursor);
         weightList.setAdapter(adapter);
 //        ListView lvWeight = (ListView) findViewById(R.id.weight_list);
 //        WeightCursorAdapter weightCursorAdapter = new WeightCursorAdapter(this, cursor);
