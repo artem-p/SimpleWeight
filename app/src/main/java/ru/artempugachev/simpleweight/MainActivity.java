@@ -60,10 +60,15 @@ public class MainActivity extends AppCompatActivity {
                 weightProjection, null, null, null, null, weightSortOrder
         );
 
+
         RecyclerView weightList = (RecyclerView) findViewById(R.id.weight_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         weightList.setLayoutManager(layoutManager);
 
+        RecyclerView.Adapter adapter = new WeightRecyclerAdapter(new String[]{"73", "72", "71", "73", "72", "71",
+                "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71",
+                "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71", "73", "72", "71"});
+        weightList.setAdapter(adapter);
 //        ListView lvWeight = (ListView) findViewById(R.id.weight_list);
 //        WeightCursorAdapter weightCursorAdapter = new WeightCursorAdapter(this, cursor);
 //        lvWeight.setAdapter(weightCursorAdapter);
