@@ -61,15 +61,10 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
-        RecyclerView weightList = (RecyclerView) findViewById(R.id.weight_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        weightList.setLayoutManager(layoutManager);
 
-        RecyclerView.Adapter adapter = new WeightRecyclerAdapter(this, cursor);
-        weightList.setAdapter(adapter);
-//        ListView lvWeight = (ListView) findViewById(R.id.weight_list);
-//        WeightCursorAdapter weightCursorAdapter = new WeightCursorAdapter(this, cursor);
-//        lvWeight.setAdapter(weightCursorAdapter);
+        ListView lvWeight = (ListView) findViewById(R.id.weight_list);
+        WeightCursorAdapter weightCursorAdapter = new WeightCursorAdapter(this, cursor);
+        lvWeight.setAdapter(weightCursorAdapter);
 
     }
 
