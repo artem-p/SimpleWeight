@@ -1,37 +1,33 @@
 package ru.artempugachev.simpleweight;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText etWeightInput;
     private Button saveButton;
     private WeightDBOpenHelper dbHelper;
+    private WeightCursorAdapter weightCursorAdapter;
+    private final String[] WEIGHT_PROJECTION = {
+            WeightDBContract.WeightEntry._ID,
+            WeightDBContract.WeightEntry.COLUMN_NAME_TIME,
+            WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT
+    };
+
+    private final String WEIGHT_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +43,17 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new SaveOnClickListener());
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String[] weightProjection = {
-                WeightDBContract.WeightEntry._ID,
-                WeightDBContract.WeightEntry.COLUMN_NAME_TIME,
-                WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT
-        };
 
-        String weightSortOrder = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
+
 
         Cursor cursor = db.query(
                 WeightDBContract.WeightEntry.TABLE_NAME,
-                weightProjection, null, null, null, null, weightSortOrder
+                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_SORT_ORDER
         );
 
 
-
         ListView lvWeight = (ListView) findViewById(R.id.weight_list);
-        WeightCursorAdapter weightCursorAdapter = new WeightCursorAdapter(this, cursor);
+        weightCursorAdapter = new WeightCursorAdapter(this, cursor);
         lvWeight.setAdapter(weightCursorAdapter);
 
     }
@@ -104,9 +94,14 @@ public class MainActivity extends AppCompatActivity {
                 ContentValues values = new ContentValues();
                 values.put(WeightDBContract.WeightEntry.COLUMN_NAME_TIME, timestamp);
                 values.put(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT, weight);
-
                 long newRowId = db.insert(WeightDBContract.WeightEntry.TABLE_NAME,
                         null, values);
+                Cursor cursor = db.query(
+                        WeightDBContract.WeightEntry.TABLE_NAME,
+                        WEIGHT_PROJECTION, null, null, null, null, WEIGHT_SORT_ORDER
+                );
+
+                weightCursorAdapter.changeCursor(cursor);
             } else {
                 Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
             }
