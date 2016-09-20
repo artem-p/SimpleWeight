@@ -8,4 +8,7 @@
     <string name="kg">kg</string>
     <string name="save">Save</string>
     <string name="wrong_weight">Wrong weight</string>
+    <string name="delete_question">Delete?</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 </resources>

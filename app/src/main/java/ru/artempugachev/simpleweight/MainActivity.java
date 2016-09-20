@@ -1,8 +1,10 @@
 package ru.artempugachev.simpleweight;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -50,20 +52,33 @@ public class MainActivity extends AppCompatActivity {
         ListView lvWeight = (ListView) findViewById(R.id.weight_list);
         weightCursorAdapter = new WeightCursorAdapter(this, cursor);
         lvWeight.setAdapter(weightCursorAdapter);
+
+        // todo OnItemLongClickListener в отдельый класс
         lvWeight.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
                 //  Удаляем строку с айди из базы
-                String selection = WeightDBContract.WeightEntry._ID + " LIKE ?";
-                String[] selectionArgs = { String.valueOf(id) };
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+                adb.setTitle(R.string.delete_question);
+                adb.setMessage("Are you sure you want to delete this record?");
+                adb.setNegativeButton(R.string.cancel, null);
+                adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String selection = WeightDBContract.WeightEntry._ID + " LIKE ?";
+                        String[] selectionArgs = { String.valueOf(id) };
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-                db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
+                        db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
 
-                //  Обновляем курсор, чтобы обновился список
-                Cursor c = getCurrentCursor(db);
-                weightCursorAdapter.changeCursor(c);
-                db.close();
+                        //  Обновляем курсор, чтобы обновился список
+                        Cursor c = getCurrentCursor(db);
+                        weightCursorAdapter.changeCursor(c);
+                        db.close();
+                    }
+                });
+                adb.show();
+
                 return false;
             }
 
