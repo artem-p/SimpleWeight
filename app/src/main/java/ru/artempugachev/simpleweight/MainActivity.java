@@ -44,13 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-
-
-        Cursor cursor = db.query(
-                WeightDBContract.WeightEntry.TABLE_NAME,
-                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_SORT_ORDER
-        );
-
+        Cursor cursor = getCurrentCursor(db);
 
         ListView lvWeight = (ListView) findViewById(R.id.weight_list);
         weightCursorAdapter = new WeightCursorAdapter(this, cursor);
@@ -80,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private Cursor getCurrentCursor(SQLiteDatabase db) {
+        Cursor cursor = db.query(
+                WeightDBContract.WeightEntry.TABLE_NAME,
+                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_SORT_ORDER
+        );
+
+        return cursor;
+    }
+
     private class SaveOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -96,10 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 values.put(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT, weight);
                 long newRowId = db.insert(WeightDBContract.WeightEntry.TABLE_NAME,
                         null, values);
-                Cursor cursor = db.query(
-                        WeightDBContract.WeightEntry.TABLE_NAME,
-                        WEIGHT_PROJECTION, null, null, null, null, WEIGHT_SORT_ORDER
-                );
+                Cursor cursor = getCurrentCursor(db);
 
                 weightCursorAdapter.changeCursor(cursor);
             } else {
