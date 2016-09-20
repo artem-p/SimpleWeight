@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -49,6 +50,24 @@ public class MainActivity extends AppCompatActivity {
         ListView lvWeight = (ListView) findViewById(R.id.weight_list);
         weightCursorAdapter = new WeightCursorAdapter(this, cursor);
         lvWeight.setAdapter(weightCursorAdapter);
+        lvWeight.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //  Удаляем строку с айди из базы
+                String selection = WeightDBContract.WeightEntry._ID + " LIKE ?";
+                String[] selectionArgs = { String.valueOf(id) };
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
+
+                //  Обновляем курсор, чтобы обновился список
+                Cursor c = getCurrentCursor(db);
+                weightCursorAdapter.changeCursor(c);
+                db.close();
+                return false;
+            }
+
+        });
 
     }
 
