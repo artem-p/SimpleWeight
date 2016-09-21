@@ -11,15 +11,16 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textColor="@color/primary_text"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textColor="#343434"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textColor="@color/secondary_text"
+        android:textSize="10sp"/>
 
 
 </LinearLayout>
