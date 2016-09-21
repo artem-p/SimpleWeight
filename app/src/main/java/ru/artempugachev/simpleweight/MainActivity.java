@@ -53,37 +53,7 @@ public class MainActivity extends AppCompatActivity {
         weightCursorAdapter = new WeightCursorAdapter(this, cursor);
         lvWeight.setAdapter(weightCursorAdapter);
 
-        // todo OnItemLongClickListener в отдельый класс
-        lvWeight.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
-                //  Удаляем строку с айди из базы
-                AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
-                adb.setTitle(R.string.delete_question);
-                adb.setMessage("Are you sure you want to delete this record?");
-                adb.setNegativeButton(R.string.cancel, null);
-                adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String selection = WeightDBContract.WeightEntry._ID + " LIKE ?";
-                        String[] selectionArgs = { String.valueOf(id) };
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-                        db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
-
-                        //  Обновляем курсор, чтобы обновился список
-                        Cursor c = getCurrentCursor(db);
-                        weightCursorAdapter.changeCursor(c);
-                        db.close();
-                    }
-                });
-                adb.show();
-
-                return false;
-            }
-
-        });
-
+        lvWeight.setOnItemLongClickListener(new OnWeightItemLongClickListener());
     }
 
     @Override
@@ -142,4 +112,34 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    private class OnWeightItemLongClickListener implements AdapterView.OnItemLongClickListener {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
+            //  Удаляем строку с айди из базы
+            AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+            adb.setTitle(R.string.delete_question);
+            adb.setMessage("Are you sure you want to delete this record?");
+            adb.setNegativeButton(R.string.cancel, null);
+            adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    String selection = WeightDBContract.WeightEntry._ID + " LIKE ?";
+                    String[] selectionArgs = { String.valueOf(id) };
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                    db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
+
+                    //  Обновляем курсор, чтобы обновился список
+                    Cursor c = getCurrentCursor(db);
+                    weightCursorAdapter.changeCursor(c);
+                    db.close();
+                }
+            });
+            adb.show();
+
+            return false;
+        }
+    }
+
 }
