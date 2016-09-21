@@ -10,6 +10,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class WeightCursorAdapter extends CursorAdapter {
     public WeightCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -24,9 +26,13 @@ public class WeightCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tvWeight = (TextView) view.findViewById(R.id.tvWeightVal);
+        TextView tvWeight = (TextView) view.findViewById(R.id.tvWeight);
         String weight = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
         tvWeight.setText(weight);
+
+        TextView tvTime = (TextView) view.findViewById(R.id.tvTime);
+        String time = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
+        tvTime.setText(time);
     }
 
 }
