@@ -12,6 +12,10 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class WeightCursorAdapter extends CursorAdapter {
     public WeightCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -31,8 +35,12 @@ public class WeightCursorAdapter extends CursorAdapter {
         tvWeight.setText(weight);
 
         TextView tvTime = (TextView) view.findViewById(R.id.tvTime);
-        String time = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
-        tvTime.setText(time);
+        String sTimestamp = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
+        long timestamp = Long.parseLong(sTimestamp);
+        Date date = new Date(timestamp);
+        String sTime = DateFormat.getDateTimeInstance().format(date);
+
+        tvTime.setText(sTime);
     }
 
 }
