@@ -17,6 +17,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText etWeightInput;
@@ -29,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
             WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT
     };
 
-    private final String WEIGHT_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
+    private final String WEIGHT_LIST_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
+
+    private final String WEIGHT_CHART_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " ASC";
 
 
     @Override
@@ -47,13 +56,38 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = getCurrentCursor(db);
-
+        Cursor listCursor = getCurrentCursor(db);
+        // list
         ListView lvWeight = (ListView) findViewById(R.id.weight_list);
-        weightCursorAdapter = new WeightCursorAdapter(this, cursor);
+        weightCursorAdapter = new WeightCursorAdapter(this, listCursor);
         lvWeight.setAdapter(weightCursorAdapter);
-
         lvWeight.setOnItemLongClickListener(new OnWeightItemLongClickListener());
+
+        // chart
+        Cursor chartCursor = getCursorForChart(db);
+        try {
+            LineChart chart = (LineChart) findViewById(R.id.weightChart);
+            List<Entry> chartEntries = new ArrayList<Entry>();
+            while (chartCursor.moveToNext()) {
+                String sWeight = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
+                String sTimestamp = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
+
+                float weight = Float.parseFloat(sWeight);
+                long timestamp = Long.parseLong(sTimestamp);
+                Date time = new Date(timestamp);
+//                chartEntries.add(new Entry(time, weight))
+
+                Toast.makeText(MainActivity.this, sWeight, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        finally {
+            chartCursor.close();
+
+        }
+
+
+
     }
 
     @Override
@@ -81,7 +115,16 @@ public class MainActivity extends AppCompatActivity {
     private Cursor getCurrentCursor(SQLiteDatabase db) {
         Cursor cursor = db.query(
                 WeightDBContract.WeightEntry.TABLE_NAME,
-                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_SORT_ORDER
+                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_LIST_SORT_ORDER
+        );
+
+        return cursor;
+    }
+
+    private Cursor getCursorForChart(SQLiteDatabase db) {
+        Cursor cursor = db.query(
+                WeightDBContract.WeightEntry.TABLE_NAME,
+                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_CHART_SORT_ORDER
         );
 
         return cursor;
