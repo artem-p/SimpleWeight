@@ -18,7 +18,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,10 +77,12 @@ public class MainActivity extends AppCompatActivity {
                 float weight = Float.parseFloat(sWeight);
                 long timestamp = Long.parseLong(sTimestamp);
                 Date time = new Date(timestamp);
-//                chartEntries.add(new Entry(time, weight))
+                chartEntries.add(new Entry(timestamp, weight))
 
                 Toast.makeText(MainActivity.this, sWeight, Toast.LENGTH_SHORT).show();
             }
+
+            LineDataSet dataSet = new LineDataSet(chartEntries, getString(R.string.input_weight_label));
 
         }
         finally {
