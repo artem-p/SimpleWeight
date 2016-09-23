@@ -20,8 +20,10 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             LineChart chart = (LineChart) findViewById(R.id.weightChart);
             List<Entry> chartEntries = new ArrayList<Entry>();
+            int counter = 0;
             while (chartCursor.moveToNext()) {
                 String sWeight = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
                 String sTimestamp = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
@@ -77,13 +80,16 @@ public class MainActivity extends AppCompatActivity {
                 float weight = Float.parseFloat(sWeight);
                 long timestamp = Long.parseLong(sTimestamp);
                 Date time = new Date(timestamp);
-                chartEntries.add(new Entry(timestamp, weight))
+                String sTime = DateFormat.getDateTimeInstance().format(time);
+                chartEntries.add(new Entry(counter, weight));
 
-                Toast.makeText(MainActivity.this, sWeight, Toast.LENGTH_SHORT).show();
+                counter++;
             }
 
             LineDataSet dataSet = new LineDataSet(chartEntries, getString(R.string.input_weight_label));
-
+            LineData chartData = new LineData(dataSet);
+            chart.setData(chartData);
+            chart.invalidate();
         }
         finally {
             chartCursor.close();
