@@ -47,10 +47,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnSave" />
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/weightChart"
+        <com.db.chart.view.LineChartView
+            xmlns:chart="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/weight_chart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="100dp"/>
 
         <ListView
             android:layout_width="match_parent"

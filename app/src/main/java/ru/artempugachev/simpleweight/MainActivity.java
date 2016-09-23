@@ -17,11 +17,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+import com.db.chart.model.LineSet;
+import com.db.chart.view.LineChartView;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -70,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         // chart
         Cursor chartCursor = getCursorForChart(db);
         try {
-            LineChart chart = (LineChart) findViewById(R.id.weightChart);
-            List<Entry> chartEntries = new ArrayList<Entry>();
+            LineChartView chart = (LineChartView) findViewById(R.id.weight_chart);
+            LineSet dataset = new LineSet(new String[] {}, new float[] {});
             int counter = 0;
             while (chartCursor.moveToNext()) {
                 String sWeight = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
@@ -81,15 +78,14 @@ public class MainActivity extends AppCompatActivity {
                 long timestamp = Long.parseLong(sTimestamp);
                 Date time = new Date(timestamp);
                 String sTime = DateFormat.getDateTimeInstance().format(time);
-                chartEntries.add(new Entry(counter, weight));
+                dataset.addPoint(sTime, weight);
 
                 counter++;
             }
 
-            LineDataSet dataSet = new LineDataSet(chartEntries, getString(R.string.input_weight_label));
-            LineData chartData = new LineData(dataSet);
-            chart.setData(chartData);
-            chart.invalidate();
+
+            chart.addData(dataset);
+            chart.show();
         }
         finally {
             chartCursor.close();
