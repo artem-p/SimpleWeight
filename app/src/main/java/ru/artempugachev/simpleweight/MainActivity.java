@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             LineChartView chart = (LineChartView) findViewById(R.id.weight_chart);
             LineSet dataset = new LineSet(new String[] {}, new float[] {});
-            int counter = 0;
             while (chartCursor.moveToNext()) {
                 String sWeight = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
                 String sTimestamp = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
@@ -79,12 +78,11 @@ public class MainActivity extends AppCompatActivity {
                 Date time = new Date(timestamp);
                 String sTime = DateFormat.getDateTimeInstance().format(time);
                 dataset.addPoint(sTime, weight);
-
-                counter++;
             }
 
 
             chart.addData(dataset);
+            chart.setStep(10);
             chart.show();
         }
         finally {
