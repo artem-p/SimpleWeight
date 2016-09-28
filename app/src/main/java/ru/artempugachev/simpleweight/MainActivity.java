@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.db.chart.Tools;
 import com.db.chart.model.LineSet;
+import com.db.chart.model.Point;
 import com.db.chart.view.LineChartView;
 
 import java.text.DateFormat;
@@ -77,13 +80,23 @@ public class MainActivity extends AppCompatActivity {
                 long timestamp = Long.parseLong(sTimestamp);
                 Date time = new Date(timestamp);
                 String sTime = DateFormat.getDateTimeInstance().format(time);
-                dataset.addPoint(sTime, weight);
+
+                Point point = new Point(sTime, weight);
+                point.setColor(Color.parseColor("#ffffff"));
+                point.setStrokeColor(Color.parseColor("#0290c3"));
+
+                dataset.addPoint(point);
             }
 
+            dataset.setColor(Color.parseColor("#004f7f"))
+                    .setThickness(Tools.fromDpToPx(3))
+                    .setSmooth(true);
+            if (dataset.size() > 0) {
+                chart.addData(dataset);
+                chart.setStep(10);
+                chart.show();
+            }
 
-            chart.addData(dataset);
-            chart.setStep(10);
-            chart.show();
         }
         finally {
             chartCursor.close();
