@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -134,15 +135,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             LineDataSet dataSet = new LineDataSet(entries, getString(R.string.input_weight_label));
-            dataSet.setColor(Color.rgb(240, 238, 70));
+            dataSet.setColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
             dataSet.setLineWidth(2.5f);
-            dataSet.setCircleColor(Color.rgb(240, 238, 70));
+            dataSet.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
             dataSet.setCircleRadius(5f);
-            dataSet.setFillColor(Color.rgb(240, 238, 70));
+            dataSet.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
             dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             dataSet.setDrawValues(true);
             dataSet.setValueTextSize(10f);
-            dataSet.setValueTextColor(Color.rgb(240, 238, 70));
+            dataSet.setValueTextColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
 //            dataSet.setColor
 //            dataSet.setValueTextColor();
             LineData weightData = new LineData(dataSet);
