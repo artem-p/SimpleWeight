@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             LineChart chart = (LineChart) findViewById(R.id.weight_chart);
             chart.setDescription("");
             chart.setDragDecelerationFrictionCoef(0.9f);
+            chart.setAutoScaleMinMaxEnabled(true);
 
             // enable scaling and dragging
             chart.setDragEnabled(true);
@@ -133,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             LineDataSet dataSet = new LineDataSet(entries, getString(R.string.input_weight_label));
+            dataSet.setColor(Color.rgb(240, 238, 70));
+            dataSet.setLineWidth(2.5f);
+            dataSet.setCircleColor(Color.rgb(240, 238, 70));
+            dataSet.setCircleRadius(5f);
+            dataSet.setFillColor(Color.rgb(240, 238, 70));
+            dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            dataSet.setDrawValues(true);
+            dataSet.setValueTextSize(10f);
+            dataSet.setValueTextColor(Color.rgb(240, 238, 70));
 //            dataSet.setColor
 //            dataSet.setValueTextColor();
             LineData weightData = new LineData(dataSet);
