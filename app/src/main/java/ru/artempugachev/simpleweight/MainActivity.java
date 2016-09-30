@@ -18,15 +18,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.db.chart.Tools;
-import com.db.chart.model.LineSet;
-import com.db.chart.model.Point;
-import com.db.chart.view.LineChartView;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -70,33 +76,68 @@ public class MainActivity extends AppCompatActivity {
         // chart
         Cursor chartCursor = getCursorForChart(db);
         try {
-            LineChartView chart = (LineChartView) findViewById(R.id.weight_chart);
-            LineSet dataset = new LineSet(new String[] {}, new float[] {});
+            LineChart chart = (LineChart) findViewById(R.id.weight_chart);
+            chart.setDescription("");
+            chart.setDragDecelerationFrictionCoef(0.9f);
+
+            // enable scaling and dragging
+            chart.setDragEnabled(true);
+            chart.setScaleEnabled(true);
+            chart.setDrawGridBackground(false);
+            chart.setHighlightPerDragEnabled(true);
+
+            // set an alternative background color
+            chart.setBackgroundColor(Color.WHITE);
+//            chart.setViewPortOffsets(0f, 0f, 0f, 0f);
+            XAxis xAxis = chart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setDrawGridLines(false);
+            xAxis.setTextColor(Color.rgb(255, 192, 56));
+            xAxis.setCenterAxisLabels(true);
+//            xAxis.setGranularityEnabled(true);
+            xAxis.setGranularity(1f);
+            xAxis.setValueFormatter(new AxisValueFormatter() {
+
+                private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM");
+
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+
+//                    long millis = TimeUnit.HOURS.toMillis((long) value);
+                    return mFormat.format(new Date((long)value));
+
+//                    Date time = new Date(millis);
+//                    String sTime = DateFormat.getDateTimeInstance().format(time);
+//                    return sTime;
+                }
+
+                @Override
+                public int getDecimalDigits() {
+                    return 0;
+                }
+            });
+            YAxis rightYAxis = chart.getAxisRight();
+            rightYAxis.setEnabled(false);
+
+            List<Entry> entries = new ArrayList<Entry>();
             while (chartCursor.moveToNext()) {
                 String sWeight = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
                 String sTimestamp = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
 
                 float weight = Float.parseFloat(sWeight);
                 long timestamp = Long.parseLong(sTimestamp);
-                Date time = new Date(timestamp);
-                String sTime = DateFormat.getDateTimeInstance().format(time);
+//                Date time = new Date(timestamp);
+//                String sTime = DateFormat.getDateTimeInstance().format(time);
 
-                Point point = new Point(sTime, weight);
-                point.setColor(Color.parseColor("#ffffff"));
-                point.setStrokeColor(Color.parseColor("#0290c3"));
-
-                dataset.addPoint(point);
+                entries.add(new Entry(timestamp, weight));
             }
 
-            dataset.setColor(Color.parseColor("#004f7f"))
-                    .setThickness(Tools.fromDpToPx(3))
-                    .setSmooth(true);
-            if (dataset.size() > 0) {
-                chart.addData(dataset);
-                chart.setStep(10);
-                chart.show();
-            }
-
+            LineDataSet dataSet = new LineDataSet(entries, getString(R.string.input_weight_label));
+//            dataSet.setColor
+//            dataSet.setValueTextColor();
+            LineData weightData = new LineData(dataSet);
+            chart.setData(weightData);
+            chart.invalidate();
         }
         finally {
             chartCursor.close();
