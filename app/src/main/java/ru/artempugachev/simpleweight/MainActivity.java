@@ -27,6 +27,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -128,8 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
                 float weight = Float.parseFloat(sWeight);
                 long timestamp = Long.parseLong(sTimestamp);
-//                Date time = new Date(timestamp);
-//                String sTime = DateFormat.getDateTimeInstance().format(time);
 
                 entries.add(new Entry(timestamp, weight));
             }
@@ -144,8 +144,12 @@ public class MainActivity extends AppCompatActivity {
             dataSet.setDrawValues(true);
             dataSet.setValueTextSize(10f);
             dataSet.setValueTextColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
-//            dataSet.setColor
-//            dataSet.setValueTextColor();
+            dataSet.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                    return String.valueOf(value);
+                }
+            });
             LineData weightData = new LineData(dataSet);
             chart.setData(weightData);
             chart.invalidate();
@@ -202,12 +206,12 @@ public class MainActivity extends AppCompatActivity {
     private class SaveOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            int weight;
+            float weight;
             String sWeight = String.valueOf(etWeightInput.getText());
 
             if(!sWeight.equals("")) {
                 long timestamp = System.currentTimeMillis();
-                weight = Integer.parseInt(sWeight);
+                weight = Float.parseFloat(sWeight);
                 //  todo async task для записи
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
