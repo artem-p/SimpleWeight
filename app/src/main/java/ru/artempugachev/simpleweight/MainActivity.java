@@ -141,9 +141,10 @@ public class MainActivity extends AppCompatActivity {
             dataSet.setCircleRadius(5f);
             dataSet.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
             dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            dataSet.setDrawValues(true);
+            dataSet.setDrawValues(false);
             dataSet.setValueTextSize(10f);
             dataSet.setValueTextColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
+            dataSet.setHighlightEnabled(false);
             dataSet.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
