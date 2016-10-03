@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         Cursor chartCursor = getCursorForChart(db);
         try {
             LineChart chart = (LineChart) findViewById(R.id.weight_chart);
+            ChartMarkerView mv = new ChartMarkerView(this, R.layout.weight_marker_layout);
+            chart.setMarkerView(mv);
             chart.setDescription("");
             chart.setDragDecelerationFrictionCoef(0.9f);
             chart.setAutoScaleMinMaxEnabled(true);
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             dataSet.setDrawValues(false);
             dataSet.setValueTextSize(10f);
             dataSet.setValueTextColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
-            dataSet.setHighlightEnabled(false);
+            dataSet.setHighlightEnabled(true);
             dataSet.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
