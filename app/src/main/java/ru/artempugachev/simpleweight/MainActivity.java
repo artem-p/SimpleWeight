@@ -147,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
             dataSet.setValueTextSize(10f);
             dataSet.setValueTextColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
             dataSet.setHighlightEnabled(true);
+            dataSet.setDrawHorizontalHighlightIndicator(false);
+            dataSet.setDrawVerticalHighlightIndicator(false);
             dataSet.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
