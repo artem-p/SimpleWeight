@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -242,12 +243,15 @@ public class MainActivity extends AppCompatActivity {
             weightData.addEntry(new Entry(timestamp, weight), 0);
             chart.notifyDataSetChanged();
             chart.invalidate();
+
         }
+
+
     }
 
     private class OnWeightItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
-        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
+        public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int position, final long id) {
             //  Удаляем строку с айди из базы
             AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
             adb.setTitle(R.string.delete_question);
@@ -266,11 +270,23 @@ public class MainActivity extends AppCompatActivity {
                     Cursor c = getCurrentCursor(db);
                     weightCursorAdapter.changeCursor(c);
                     db.close();
+
+                    removePointFromChart(view);
                 }
             });
             adb.show();
 
             return false;
+        }
+        private void removePointFromChart(View listItemView) {
+            TextView tvWeight = (TextView) listItemView.findViewById(R.id.tvTime);
+            Object tag = tvWeight.getTag();
+            long timestamp = (long) tag;
+
+//            String sTime = tvTime.getText().toString();
+            weightData.removeEntry(timestamp, 0);
+            chart.notifyDataSetChanged();
+            chart.invalidate();
         }
     }
 

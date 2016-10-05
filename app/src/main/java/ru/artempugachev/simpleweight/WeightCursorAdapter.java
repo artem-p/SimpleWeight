@@ -41,6 +41,7 @@ public class WeightCursorAdapter extends CursorAdapter {
         String sTime = DateFormat.getDateTimeInstance().format(date);
 
         tvTime.setText(sTime);
+        tvTime.setTag(timestamp);
     }
 
 }
