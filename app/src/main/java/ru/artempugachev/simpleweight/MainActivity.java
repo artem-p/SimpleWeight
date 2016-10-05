@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final String WEIGHT_CHART_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " ASC";
 
+    private LineChart chart;
+    LineDataSet dataSet;
+    LineData weightData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         // chart
         Cursor chartCursor = getCursorForChart(db);
         try {
-            LineChart chart = (LineChart) findViewById(R.id.weight_chart);
+            chart = (LineChart) findViewById(R.id.weight_chart);
             ChartMarkerView mv = new ChartMarkerView(this, R.layout.weight_marker_layout);
             chart.setMarkerView(mv);
             chart.setDescription("");
@@ -136,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 entries.add(new Entry(timestamp, weight));
             }
 
-            LineDataSet dataSet = new LineDataSet(entries, getString(R.string.input_weight_label));
+            dataSet = new LineDataSet(entries, getString(R.string.input_weight_label));
             dataSet.setColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
             dataSet.setLineWidth(2.5f);
             dataSet.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.accent));
@@ -155,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     return String.valueOf(value);
                 }
             });
-            LineData weightData = new LineData(dataSet);
+            weightData = new LineData(dataSet);
             chart.setData(weightData);
             chart.invalidate();
         }
@@ -227,10 +230,18 @@ public class MainActivity extends AppCompatActivity {
                 Cursor cursor = getCurrentCursor(db);
 
                 weightCursorAdapter.changeCursor(cursor);
+
+                addPointToChart(timestamp, weight);
             } else {
                 Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
             }
 
+        }
+
+        private void addPointToChart(long timestamp, float weight) {
+            weightData.addEntry(new Entry(timestamp, weight), 0);
+            chart.notifyDataSetChanged();
+            chart.invalidate();
         }
     }
 
