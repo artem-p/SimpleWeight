@@ -29,6 +29,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.SimpleDateFormat;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private LineChart chart;
     LineDataSet dataSet;
     LineData weightData;
+    private MenuItem deleteActionBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,17 @@ public class MainActivity extends AppCompatActivity {
             chart.setScaleEnabled(true);
             chart.setDrawGridBackground(false);
             chart.setHighlightPerDragEnabled(true);
+            chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry e, Highlight h) {
+
+                }
+
+                @Override
+                public void onNothingSelected() {
+
+                }
+            });
 
             // set an alternative background color
             chart.setBackgroundColor(Color.WHITE);
@@ -174,7 +188,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
+        deleteActionBtn = menu.findItem(R.id.action_delete);
+        deleteActionBtn.setVisible(false);
         return true;
     }
 
