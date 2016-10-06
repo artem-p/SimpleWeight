@@ -11,4 +11,5 @@
     <string name="delete_question">Delete?</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
+    <string name="action_delete">Delete weight</string>
 </resources>

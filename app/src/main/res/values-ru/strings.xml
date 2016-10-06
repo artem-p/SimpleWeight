@@ -8,4 +8,7 @@
     <string name="kg">кг</string>
     <string name="save">Сохранить</string>
     <string name="wrong_weight">Неверное значение веса</string>
+    <string name="action_delete">Удалить вес</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete_question">Удалить измерение?</string>
 </resources>

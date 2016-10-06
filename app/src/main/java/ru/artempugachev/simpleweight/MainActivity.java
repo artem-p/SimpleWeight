@@ -31,12 +31,10 @@ import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -271,14 +269,14 @@ public class MainActivity extends AppCompatActivity {
                     weightCursorAdapter.changeCursor(c);
                     db.close();
 
-                    removePointFromChart(view);
+                    removePointFromChar(view);
                 }
             });
             adb.show();
 
             return false;
         }
-        private void removePointFromChart(View listItemView) {
+        private void removePointFromChar(View listItemView) {
             TextView tvWeight = (TextView) listItemView.findViewById(R.id.tvTime);
             Object tag = tvWeight.getTag();
             long timestamp = (long) tag;
