@@ -99,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
             chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
-
+                    deleteActionBtn.setVisible(true);
                 }
 
                 @Override
                 public void onNothingSelected() {
-
+                    deleteActionBtn.setVisible(false);
                 }
             });
 
