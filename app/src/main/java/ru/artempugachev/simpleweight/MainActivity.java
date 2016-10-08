@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     LineDataSet dataSet;
     LineData weightData;
     private MenuItem deleteActionBtn;
+    private Entry selectedEntry;        //  selected (highlightedt) entry on chart
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +101,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
                     deleteActionBtn.setVisible(true);
+                    selectedEntry = e;
                 }
 
                 @Override
                 public void onNothingSelected() {
                     deleteActionBtn.setVisible(false);
+                    selectedEntry = null;
                 }
             });
 
@@ -200,7 +203,11 @@ public class MainActivity extends AppCompatActivity {
                 // Show settings
                 Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.action_delete:
+                //  delete selected on chart entry
+                if(selectedEntry != null) {
 
+                }
             default:
                 return super.onOptionsItemSelected(item);
 
