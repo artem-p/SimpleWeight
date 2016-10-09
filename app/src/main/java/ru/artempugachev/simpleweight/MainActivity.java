@@ -146,13 +146,14 @@ public class MainActivity extends AppCompatActivity {
 
             List<Entry> entries = new ArrayList<Entry>();
             while (chartCursor.moveToNext()) {
+                Long id = chartCursor.getLong(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry._ID));
                 String sWeight = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
                 String sTimestamp = chartCursor.getString(chartCursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
 
                 float weight = Float.parseFloat(sWeight);
                 long timestamp = Long.parseLong(sTimestamp);
 
-                entries.add(new Entry(timestamp, weight));
+                entries.add(new Entry(timestamp, weight, id));
             }
 
             dataSet = new LineDataSet(entries, getString(R.string.input_weight_label));
