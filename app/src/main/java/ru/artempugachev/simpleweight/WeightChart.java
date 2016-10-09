@@ -35,6 +35,7 @@ public class WeightChart {
     private List<Entry> entries;
     private LineDataSet dataSet;
     private LineData weightData;
+    private Entry selectedEntry;
 
     public WeightChart(Context context, View chartView, int markerLayoutId, String weightLabel) {
         this.chartView = chartView;
@@ -57,19 +58,20 @@ public class WeightChart {
         chart.setScaleEnabled(true);
         chart.setDrawGridBackground(false);
         chart.setHighlightPerDragEnabled(true);
-//        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-//            @Override
-//            public void onValueSelected(Entry e, Highlight h) {
-//                deleteActionBtn.setVisible(true);
-//                selectedEntry = e;
-//            }
-//
-//            @Override
-//            public void onNothingSelected() {
-//                deleteActionBtn.setVisible(false);
-//                selectedEntry = null;
-//            }
-//        });
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                //  todo http://stackoverflow.com/questions/28410938/how-to-send-message-from-class-to-an-activity-and-backwards
+                deleteActionBtn.setVisible(true);
+                selectedEntry = e;
+            }
+
+            @Override
+            public void onNothingSelected() {
+                deleteActionBtn.setVisible(false);
+                selectedEntry = null;
+            }
+        });
 
         // set an alternative background color
         chart.setBackgroundColor(Color.WHITE);
@@ -160,5 +162,9 @@ public class WeightChart {
 
     public void clear() {
         // clear chart
+    }
+
+    public Entry getSelectedEntry() {
+        return selectedEntry;
     }
 }
