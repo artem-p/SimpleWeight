@@ -39,11 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     private final String WEIGHT_CHART_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " ASC";
 
-    private LineChart chart;
-    LineDataSet dataSet;
-    LineData weightData;
     private MenuItem deleteActionBtn;
     private Entry selectedEntry;        //  selected (highlightedt) entry on chart
+    private WeightChart chart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         lvWeight.setOnItemLongClickListener(new OnWeightItemLongClickListener());
 
         // chart
-        WeightChart chart = new WeightChart(this, findViewById(R.id.weight_chart),
+        chart = new WeightChart(this, findViewById(R.id.weight_chart),
                 R.layout.weight_marker_layout, getString(R.string.input_weight_label));
         chart.build();
 
@@ -151,19 +150,14 @@ public class MainActivity extends AppCompatActivity {
 
                 weightCursorAdapter.changeCursor(cursor);
 
-                addPointToChart(timestamp, weight);
+                chart.addWeightPoint(timestamp, weight);
             } else {
                 Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
             }
 
         }
 
-        private void addPointToChart(long timestamp, float weight) {
-            weightData.addEntry(new Entry(timestamp, weight), 0);
-            chart.notifyDataSetChanged();
-            chart.invalidate();
 
-        }
 
 
     }
@@ -197,15 +191,13 @@ public class MainActivity extends AppCompatActivity {
 
             return false;
         }
+
         private void removePointFromChar(View listItemView) {
             TextView tvWeight = (TextView) listItemView.findViewById(R.id.tvTime);
             Object tag = tvWeight.getTag();
             long timestamp = (long) tag;
 
-//            String sTime = tvTime.getText().toString();
-            weightData.removeEntry(timestamp, 0);
-            chart.notifyDataSetChanged();
-            chart.invalidate();
+            chart.removeWeightPoint(timestamp);
         }
     }
 
