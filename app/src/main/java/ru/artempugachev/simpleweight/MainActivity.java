@@ -22,8 +22,10 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnChartValueSelectedListener {
     private Toolbar toolbar;
     private EditText etWeightInput;
     private Button saveButton;
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem deleteActionBtn;
     private Entry selectedEntry;        //  selected (highlightedt) entry on chart
     private WeightChart chart;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         // chart
         chart = new WeightChart(this, findViewById(R.id.weight_chart),
-                R.layout.weight_marker_layout, getString(R.string.input_weight_label));
+                R.layout.weight_marker_layout, getString(R.string.input_weight_label), this);
         chart.build();
+
 
         Cursor chartCursor = getCursorForChart(db);
 
@@ -128,6 +130,19 @@ public class MainActivity extends AppCompatActivity {
         );
 
         return cursor;
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        deleteActionBtn.setVisible(true);
+        selectedEntry = e;
+    }
+
+    @Override
+    public void onNothingSelected() {
+        deleteActionBtn.setVisible(false);
+        selectedEntry = null;
+
     }
 
     private class SaveOnClickListener implements View.OnClickListener {
