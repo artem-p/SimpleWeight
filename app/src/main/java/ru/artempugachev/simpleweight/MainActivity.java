@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     private Toolbar toolbar;
     private EditText etWeightInput;
     private Button saveButton;
-    private WeightDBOpenHelper dbHelper;
     private WeightCursorAdapter weightCursorAdapter;
     private final String[] WEIGHT_PROJECTION = {
             WeightDBContract.WeightEntry._ID,
@@ -44,12 +43,15 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     private MenuItem deleteActionBtn;
     private Entry selectedEntry;        //  selected (highlightedt) entry on chart
     private WeightChart chart;
+    private DBWrapper dbWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dbHelper = new WeightDBOpenHelper(getApplicationContext());
+
+        dbWrapper = new DBWrapper(getApplicationContext());
+        dbWrapper.connect();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,6 +87,11 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        dbWrapper.close();
     }
 
     @Override
@@ -215,5 +222,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             chart.removeWeightPoint(timestamp);
         }
     }
+
+
 
 }
