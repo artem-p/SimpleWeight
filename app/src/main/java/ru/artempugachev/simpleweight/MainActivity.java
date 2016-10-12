@@ -73,13 +73,11 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             chartCursor.close();
 
         }
-
-
-
     }
 
     @Override
     protected void onStop() {
+        super.onStop();
         dbWrapper.close();
     }
 
@@ -102,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             case R.id.action_delete:
                 //  delete selected on chart entry
                 if(selectedEntry != null) {
-
+                    long id = (long) selectedEntry.getData();
+                    dbWrapper.deletePoint(id);
                 }
             default:
                 return super.onOptionsItemSelected(item);
