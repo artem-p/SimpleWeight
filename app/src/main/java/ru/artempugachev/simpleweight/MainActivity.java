@@ -30,16 +30,6 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     private EditText etWeightInput;
     private Button saveButton;
     private WeightCursorAdapter weightCursorAdapter;
-    private final String[] WEIGHT_PROJECTION = {
-            WeightDBContract.WeightEntry._ID,
-            WeightDBContract.WeightEntry.COLUMN_NAME_TIME,
-            WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT
-    };
-
-    private final String WEIGHT_LIST_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
-
-    private final String WEIGHT_CHART_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " ASC";
-
     private MenuItem deleteActionBtn;
     private Entry selectedEntry;        //  selected (highlightedt) entry on chart
     private WeightChart chart;
@@ -60,9 +50,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         saveButton = (Button) findViewById(R.id.btnSave);
         saveButton.setOnClickListener(new SaveOnClickListener());
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor listCursor = getCurrentCursor(db);
+        Cursor listCursor = dbWrapper.getCurrentCursor();
         // list
         ListView lvWeight = (ListView) findViewById(R.id.weight_list);
         weightCursorAdapter = new WeightCursorAdapter(this, listCursor);
@@ -75,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         chart.build();
 
 
-        Cursor chartCursor = getCursorForChart(db);
+        Cursor chartCursor = dbWrapper.getCursorForChart();
 
         try {
             chart.addData(chartCursor);
@@ -90,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         dbWrapper.close();
     }
 
@@ -121,23 +110,6 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         }
     }
 
-    private Cursor getCurrentCursor(SQLiteDatabase db) {
-        Cursor cursor = db.query(
-                WeightDBContract.WeightEntry.TABLE_NAME,
-                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_LIST_SORT_ORDER
-        );
-
-        return cursor;
-    }
-
-    private Cursor getCursorForChart(SQLiteDatabase db) {
-        Cursor cursor = db.query(
-                WeightDBContract.WeightEntry.TABLE_NAME,
-                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_CHART_SORT_ORDER
-        );
-
-        return cursor;
-    }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -162,27 +134,22 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 long timestamp = System.currentTimeMillis();
                 weight = Float.parseFloat(sWeight);
                 //  todo async task для записи
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put(WeightDBContract.WeightEntry.COLUMN_NAME_TIME, timestamp);
-                values.put(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT, weight);
-                long newRowId = db.insert(WeightDBContract.WeightEntry.TABLE_NAME,
-                        null, values);
-                Cursor cursor = getCurrentCursor(db);
+                long newPointId = dbWrapper.addPoint(timestamp, weight);
+
+
+                Cursor cursor = dbWrapper.getCurrentCursor();
 
                 weightCursorAdapter.changeCursor(cursor);
 
                 chart.addWeightPoint(timestamp, weight);
+//                cursor.close();
             } else {
                 Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
             }
 
         }
-
-
-
-
     }
+
 
     private class OnWeightItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
@@ -195,16 +162,12 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    String selection = WeightDBContract.WeightEntry._ID + " LIKE ?";
-                    String[] selectionArgs = { String.valueOf(id) };
-                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-                    db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
+                    dbWrapper.deletePoint(id);
 
                     //  Обновляем курсор, чтобы обновился список
-                    Cursor c = getCurrentCursor(db);
+                    Cursor c = dbWrapper.getCurrentCursor();
                     weightCursorAdapter.changeCursor(c);
-                    db.close();
+//                    c.close();
 
                     removePointFromChar(view);
                 }
@@ -222,7 +185,4 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             chart.removeWeightPoint(timestamp);
         }
     }
-
-
-
 }
