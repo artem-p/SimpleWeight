@@ -131,9 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 Cursor cursor = dbWrapper.getCurrentCursor();
 
                 weightCursorAdapter.changeCursor(cursor);
-//        // todo убрать, читать точки всегда из базы
-//                chart.addWeightPoint(timestamp, weight);
-//                cursor.close();
+                chart.addData(dbWrapper);
             } else {
                 Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
             }
