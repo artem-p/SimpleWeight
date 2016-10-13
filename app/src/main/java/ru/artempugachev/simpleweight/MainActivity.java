@@ -63,16 +63,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 R.layout.weight_marker_layout, getString(R.string.input_weight_label), this);
         chart.build();
 
+        chart.addData(dbWrapper);
 
-        Cursor chartCursor = dbWrapper.getCursorForChart();
-
-        try {
-            chart.addData(chartCursor);
-        }
-        finally {
-            chartCursor.close();
-
-        }
     }
 
     @Override
@@ -139,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 Cursor cursor = dbWrapper.getCurrentCursor();
 
                 weightCursorAdapter.changeCursor(cursor);
-
-                chart.addWeightPoint(timestamp, weight);
+//        // todo убрать, читать точки всегда из базы
+//                chart.addWeightPoint(timestamp, weight);
 //                cursor.close();
             } else {
                 Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();

@@ -100,17 +100,25 @@ public class WeightChart {
 
     }
 
-    public void addData(Cursor cursor) {
+    public void addData(DBWrapper dbWrapper) {
         //  add data to chart
-        while (cursor.moveToNext()) {
-            Long id = cursor.getLong(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry._ID));
-            String sWeight = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
-            String sTimestamp = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
+        Cursor cursor = dbWrapper.getCursorForChart();
 
-            float weight = Float.parseFloat(sWeight);
-            long timestamp = Long.parseLong(sTimestamp);
+        try {
+            while (cursor.moveToNext()) {
+                Long id = cursor.getLong(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry._ID));
+                String sWeight = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT));
+                String sTimestamp = cursor.getString(cursor.getColumnIndexOrThrow(WeightDBContract.WeightEntry.COLUMN_NAME_TIME));
 
-            entries.add(new Entry(timestamp, weight, id));
+                float weight = Float.parseFloat(sWeight);
+                long timestamp = Long.parseLong(sTimestamp);
+
+                entries.add(new Entry(timestamp, weight, id));
+            }
+        }
+        finally {
+            cursor.close();
+
         }
 
         dataSet = new LineDataSet(entries, weightLabel);
@@ -137,12 +145,12 @@ public class WeightChart {
         chart.invalidate();
     }
 
-    void addWeightPoint(long timestamp, float weight) {
-        // todo убрать, читать точки всегда из базы
-            weightData.addEntry(new Entry(timestamp, weight), 0);
-            chart.notifyDataSetChanged();
-            chart.invalidate();
-    }
+//    void addWeightPoint(long timestamp, float weight) {
+
+//            weightData.addEntry(new Entry(timestamp, weight), 0);
+//            chart.notifyDataSetChanged();
+//            chart.invalidate();
+//    }
 
     void removeWeightPoint(long timestamp) {
         weightData.removeEntry(timestamp, 0);
