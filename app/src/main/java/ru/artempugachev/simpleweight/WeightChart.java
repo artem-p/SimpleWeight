@@ -95,13 +95,12 @@ public class WeightChart {
         });
         YAxis rightYAxis = chart.getAxisRight();
         rightYAxis.setEnabled(false);
-
-        entries = new ArrayList<Entry>();
-
     }
+
 
     public void addData(DBWrapper dbWrapper) {
         //  add data to chart
+        entries = new ArrayList<Entry>();
         Cursor cursor = dbWrapper.getCursorForChart();
 
         try {

@@ -94,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 if(selectedEntry != null) {
                     long id = (long) selectedEntry.getData();
                     dbWrapper.deletePoint(id);
+                    chart.addData(dbWrapper);
+                    //  Обновляем курсор, чтобы обновился список
+                    Cursor c = dbWrapper.getCurrentCursor();
+                    weightCursorAdapter.changeCursor(c);
                 }
             default:
                 return super.onOptionsItemSelected(item);
@@ -158,7 +162,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                     weightCursorAdapter.changeCursor(c);
 //                    c.close();
 
-                    removePointFromChar(view);
+
+                    chart.addData(dbWrapper);
                 }
             });
             adb.show();
