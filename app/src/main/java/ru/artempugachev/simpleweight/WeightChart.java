@@ -144,19 +144,6 @@ public class WeightChart {
         chart.invalidate();
     }
 
-//    void addWeightPoint(long timestamp, float weight) {
-
-//            weightData.addEntry(new Entry(timestamp, weight), 0);
-//            chart.notifyDataSetChanged();
-//            chart.invalidate();
-//    }
-
-    void removeWeightPoint(long timestamp) {
-        weightData.removeEntry(timestamp, 0);
-        chart.notifyDataSetChanged();
-        chart.invalidate();
-    }
-
     public void clear() {
         // clear chart
     }

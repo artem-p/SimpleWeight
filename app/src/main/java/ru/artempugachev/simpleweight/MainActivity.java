@@ -167,12 +167,5 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             return false;
         }
 
-        private void removePointFromChar(View listItemView) {
-            TextView tvWeight = (TextView) listItemView.findViewById(R.id.tvTime);
-            Object tag = tvWeight.getTag();
-            long timestamp = (long) tag;
-
-            chart.removeWeightPoint(timestamp);
-        }
     }
 }
