@@ -62,7 +62,6 @@ public class WeightChart {
         chart.setScaleEnabled(true);
         chart.setDrawGridBackground(false);
         chart.setHighlightPerDragEnabled(true);
-
         // set an alternative background color
         chart.setBackgroundColor(Color.WHITE);
         chart.setOnChartValueSelectedListener(onChartValueSelectedListener);
@@ -150,5 +149,9 @@ public class WeightChart {
 
     public Entry getSelectedEntry() {
         return selectedEntry;
+    }
+
+    public void clearSelection() {
+        chart.highlightValues(null);
     }
 }

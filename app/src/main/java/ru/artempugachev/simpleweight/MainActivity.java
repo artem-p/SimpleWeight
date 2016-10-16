@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 if(selectedEntry != null) {
                     long id = (long) selectedEntry.getData();
                     deletePoint(id);
+                    chart.clearSelection();
                 }
             default:
                 return super.onOptionsItemSelected(item);
