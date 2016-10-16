@@ -93,11 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 //  delete selected on chart entry
                 if(selectedEntry != null) {
                     long id = (long) selectedEntry.getData();
-                    dbWrapper.deletePoint(id);
-                    chart.addData(dbWrapper);
-                    //  Обновляем курсор, чтобы обновился список
-                    Cursor c = dbWrapper.getCurrentCursor();
-                    weightCursorAdapter.changeCursor(c);
+                    deletePoint(id);
                 }
             default:
                 return super.onOptionsItemSelected(item);
@@ -105,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         }
     }
 
+
+    private void deletePoint(long id) {
+        dbWrapper.deletePoint(id);
+        chart.addData(dbWrapper);
+        //  Обновляем курсор, чтобы обновился список
+        Cursor c = dbWrapper.getCurrentCursor();
+        weightCursorAdapter.changeCursor(c);
+    }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -155,15 +159,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
             adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    dbWrapper.deletePoint(id);
-
-                    //  Обновляем курсор, чтобы обновился список
-                    Cursor c = dbWrapper.getCurrentCursor();
-                    weightCursorAdapter.changeCursor(c);
-//                    c.close();
-
-
-                    chart.addData(dbWrapper);
+                    deletePoint(id);
                 }
             });
             adb.show();
