@@ -37,7 +37,7 @@ public class WeightChart {
     private LineData weightData;
     private Entry selectedEntry;
     private OnChartValueSelectedListener onChartValueSelectedListener;
-
+    public final static long TIME_CONSTANT = 1476600000000L; //1476696720644
 
     public WeightChart(Context context, View chartView, int markerLayoutId, String weightLabel,
                        OnChartValueSelectedListener onChartValueSelectedListener) {
@@ -71,16 +71,17 @@ public class WeightChart {
         xAxis.setTextColor(Color.rgb(255, 192, 56));
         xAxis.setCenterAxisLabels(true);
 //            xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(1f);
+//        xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new AxisValueFormatter() {
 
             private SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM");
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-
+                // add previosly subtracted constant
+                long trueTimestampValue = (long) value + TIME_CONSTANT;
 //                    long millis = TimeUnit.HOURS.toMillis((long) value);
-                return mFormat.format(new Date((long)value));
+                return mFormat.format(new Date((trueTimestampValue)));
 
 //                    Date time = new Date(millis);
 //                    String sTime = DateFormat.getDateTimeInstance().format(time);
@@ -111,7 +112,13 @@ public class WeightChart {
                 float weight = Float.parseFloat(sWeight);
                 long timestamp = Long.parseLong(sTimestamp);
 
-                entries.add(new Entry(timestamp, weight, id));
+                //  timestamp stores as long. Chart uses float. It result to precision missing (points
+                //  with few seconds delta displays with the same time value).
+                //  To avoid it, subtract the big constant from timestamp and it will be small enough for
+                //  good precision. And add this constant in axis value formatter.
+                Long timestampDelta = timestamp - TIME_CONSTANT;
+                float chartTimestamp = timestampDelta.floatValue();
+                entries.add(new Entry(chartTimestamp, weight, id));
             }
         }
         finally {
