@@ -59,7 +59,7 @@ public class WeightChart {
 
         // enable scaling and dragging
         chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
+        chart.setScaleEnabled(false);
         chart.setDrawGridBackground(false);
         chart.setHighlightPerDragEnabled(true);
         // set an alternative background color
