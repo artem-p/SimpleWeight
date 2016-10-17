@@ -15,16 +15,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static android.R.attr.entries;
 
 public class WeightChart {
     private LineChart chart;
@@ -65,6 +63,7 @@ public class WeightChart {
         // set an alternative background color
         chart.setBackgroundColor(Color.WHITE);
         chart.setOnChartValueSelectedListener(onChartValueSelectedListener);
+
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
@@ -78,6 +77,8 @@ public class WeightChart {
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
+
+
                 // add previosly subtracted constant
                 long trueTimestampValue = (long) value + TIME_CONSTANT;
 //                    long millis = TimeUnit.HOURS.toMillis((long) value);
@@ -148,7 +149,24 @@ public class WeightChart {
         weightData = new LineData(dataSet);
         chart.setData(weightData);
         chart.invalidate();
+
+        long[] minMaxTimeStamps = getMinMaxViewportTimeStamp();
     }
+
+    private long[] getMinMaxViewportTimeStamp() {
+        ViewPortHandler handler = chart.getViewPortHandler();
+        MPPointD left = chart.getValuesByTouchPoint(handler.contentLeft(), handler.contentTop(), YAxis.AxisDependency.LEFT);
+        MPPointD right = chart.getValuesByTouchPoint(handler.contentRight(), handler.contentBottom(), YAxis.AxisDependency.LEFT);
+
+        long minVal = (long) left.x;
+        long maxVal = (long) right.x;
+
+        long trueMin = minVal + TIME_CONSTANT;
+        long trueMax = maxVal + TIME_CONSTANT;
+
+        return new long[]{trueMin, trueMax};
+    }
+
 
     public void clear() {
         // clear chart
