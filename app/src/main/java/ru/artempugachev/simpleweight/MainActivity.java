@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 //  delete selected on chart entry
                 if(selectedEntry != null) {
                     long id = (long) selectedEntry.getData();
-                    deletePoint(id);
+                    deleteWithDialog(id);
                     chart.clearSelection();
                 }
             default:
@@ -152,21 +152,25 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     private class OnWeightItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int position, final long id) {
-            //  Удаляем строку с айди из базы
-            AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
-            adb.setTitle(R.string.delete_question);
-            adb.setMessage("Are you sure you want to delete this record?");
-            adb.setNegativeButton(R.string.cancel, null);
-            adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    deletePoint(id);
-                }
-            });
-            adb.show();
-
+            deleteWithDialog(id);
             return false;
         }
+
+    }
+
+    private void deleteWithDialog(final long id) {
+        //  Удаляем строку с айди из базы
+        AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+        adb.setTitle(R.string.delete_question);
+        adb.setMessage("Are you sure you want to delete this record?");
+        adb.setNegativeButton(R.string.cancel, null);
+        adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deletePoint(id);
+            }
+        });
+        adb.show();
 
     }
 }
