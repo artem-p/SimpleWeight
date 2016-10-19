@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static ru.artempugachev.simpleweight.WeightChart.TIME_CONSTANT;
+
 public class WeightChart {
     private LineChart chart;
     private final View chartView;
@@ -38,7 +40,7 @@ public class WeightChart {
     private Entry selectedEntry;
     private OnChartValueSelectedListener onChartValueSelectedListener;
     public final static long TIME_CONSTANT = 1476600000000L; //1476696720644
-    long minMaxTimeDelta = 0;
+    TimeAxisFormatter timeAxisFormatter;
 
 
     public WeightChart(Context context, View chartView, int markerLayoutId, String weightLabel,
@@ -75,48 +77,12 @@ public class WeightChart {
         xAxis.setCenterAxisLabels(true);
 //            xAxis.setGranularityEnabled(true);
 //        xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new AxisValueFormatter() {
-            private SimpleDateFormat monthFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
-            private SimpleDateFormat dayFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
-            private SimpleDateFormat hourMinFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            private SimpleDateFormat hourMinSecFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            private SimpleDateFormat format = dayFormat;
-
-
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                // Choose label format depending of min and max time value in viewport
-                if(minMaxTimeDelta < 60*1000) {
-                    //  less than a minute
-                    format = hourMinSecFormat;
-                } else if (minMaxTimeDelta < 60*1000*60) {
-                    // less than hour
-                    format = hourMinFormat;
-                } else if (minMaxTimeDelta < 60*1000*60*24) {
-                    format = hourMinFormat;
-                } else if (minMaxTimeDelta < (long) 60*1000*60*24*30) {
-                    format = monthFormat;
-                } else {
-                    format = monthFormat;
-                }
-
-                // add previosly subtracted constant
-                long trueTimestampValue = (long) value + TIME_CONSTANT;
-//                    long millis = TimeUnit.HOURS.toMillis((long) value);
-                return format.format(new Date((trueTimestampValue)));
-
-//                    Date time = new Date(millis);
-//                    String sTime = DateFormat.getDateTimeInstance().format(time);
-//                    return sTime;
-            }
-
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
-        });
+        timeAxisFormatter = new TimeAxisFormatter(0L);
+        xAxis.setValueFormatter(timeAxisFormatter);
         YAxis rightYAxis = chart.getAxisRight();
         rightYAxis.setEnabled(false);
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
     }
 
 
@@ -172,12 +138,11 @@ public class WeightChart {
         chart.invalidate();
 
         long[] minMaxTimeStamps = getMinMaxViewportTimeStamp();
+        long minMaxTimeDelta = 0;
         if(minMaxTimeStamps.length > 0) {
             minMaxTimeDelta = minMaxTimeStamps[1] - minMaxTimeStamps[0];
         }
-
-        Legend legend = chart.getLegend();
-        legend.setEnabled(false);
+        timeAxisFormatter.setMinMaxTimeDelta(minMaxTimeDelta);
     }
 
     private long[] getMinMaxViewportTimeStamp() {
@@ -206,4 +171,55 @@ public class WeightChart {
     public void clearSelection() {
         chart.highlightValues(null);
     }
+}
+
+class TimeAxisFormatter implements AxisValueFormatter {
+    private SimpleDateFormat monthFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+    private SimpleDateFormat dayFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
+    private SimpleDateFormat hourMinFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private SimpleDateFormat hourMinSecFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private SimpleDateFormat format = dayFormat;
+
+    public void setMinMaxTimeDelta(long minMaxTimeDelta) {
+        this.minMaxTimeDelta = minMaxTimeDelta;
+    }
+
+    private long minMaxTimeDelta;
+
+    public TimeAxisFormatter(long minMaxTimeDelta) {
+        this.minMaxTimeDelta = minMaxTimeDelta;
+    }
+
+    @Override
+    public String getFormattedValue(float value, AxisBase axis) {
+        // Choose label format depending of min and max time value in viewport
+        if(minMaxTimeDelta < 60*1000) {
+            //  less than a minute
+            format = hourMinSecFormat;
+        } else if (minMaxTimeDelta < 60*1000*60) {
+            // less than hour
+            format = hourMinFormat;
+        } else if (minMaxTimeDelta < 60*1000*60*24) {
+            format = hourMinFormat;
+        } else if (minMaxTimeDelta < (long) 60*1000*60*24*30) {
+            format = monthFormat;
+        } else {
+            format = monthFormat;
+        }
+
+        // add previosly subtracted constant
+        long trueTimestampValue = (long) value + TIME_CONSTANT;
+//                    long millis = TimeUnit.HOURS.toMillis((long) value);
+        return format.format(new Date((trueTimestampValue)));
+
+//                    Date time = new Date(millis);
+//                    String sTime = DateFormat.getDateTimeInstance().format(time);
+//                    return sTime;
+    }
+
+    @Override
+    public int getDecimalDigits() {
+        return 0;
+    }
+
 }
