@@ -143,6 +143,7 @@ public class WeightChart {
             minMaxTimeDelta = minMaxTimeStamps[1] - minMaxTimeStamps[0];
         }
         timeAxisFormatter.setMinMaxTimeDelta(minMaxTimeDelta);
+        timeAxisFormatter.setLabelCount(chart.getXAxis().getLabelCount());
     }
 
     private long[] getMinMaxViewportTimeStamp() {
@@ -179,9 +180,14 @@ class TimeAxisFormatter implements AxisValueFormatter {
     private SimpleDateFormat hourMinFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private SimpleDateFormat hourMinSecFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private SimpleDateFormat format = dayFormat;
+    private int labelCount;
 
     public void setMinMaxTimeDelta(long minMaxTimeDelta) {
         this.minMaxTimeDelta = minMaxTimeDelta;
+    }
+
+    public void setLabelCount(int labelCount) {
+        this.labelCount = labelCount;
     }
 
     private long minMaxTimeDelta;
@@ -192,6 +198,7 @@ class TimeAxisFormatter implements AxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
+        // todo учитывать labelCount. Если количество дней меньше количества меток, по другому форматировать
         // Choose label format depending of min and max time value in viewport
         if(minMaxTimeDelta < 60*1000) {
             //  less than a minute
