@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -174,6 +175,9 @@ public class WeightChart {
         if(minMaxTimeStamps.length > 0) {
             minMaxTimeDelta = minMaxTimeStamps[1] - minMaxTimeStamps[0];
         }
+
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
     }
 
     private long[] getMinMaxViewportTimeStamp() {
