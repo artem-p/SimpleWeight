@@ -207,8 +207,13 @@ class TimeAxisFormatter implements AxisValueFormatter {
             // less than hour
             format = hourMinFormat;
         } else if (minMaxTimeDelta < 60*1000*60*24) {
+            // day
+            format = hourMinFormat;
+        } else if (minMaxTimeDelta < 60*1000*60*24*labelCount) {
+            // few days less than label count
             format = hourMinFormat;
         } else if (minMaxTimeDelta < (long) 60*1000*60*24*30) {
+            // month
             format = dayFormat;
         } else {
             format = monthFormat;
