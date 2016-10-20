@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     private Toolbar toolbar;
     private EditText etWeightInput;
     private Button saveButton;
-    private WeightCursorAdapter weightCursorAdapter;
+//    private WeightCursorAdapter weightCursorAdapter;
     private MenuItem deleteActionBtn;
     private Entry selectedEntry;        //  selected (highlightedt) entry on chart
     private WeightChart chart;
@@ -51,12 +51,12 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         saveButton.setOnClickListener(new SaveOnClickListener());
 
 
-        Cursor listCursor = dbWrapper.getCurrentCursor();
-        // list
-        ListView lvWeight = (ListView) findViewById(R.id.weight_list);
-        weightCursorAdapter = new WeightCursorAdapter(this, listCursor);
-        lvWeight.setAdapter(weightCursorAdapter);
-        lvWeight.setOnItemLongClickListener(new OnWeightItemLongClickListener());
+//        Cursor listCursor = dbWrapper.getCurrentCursor();
+//        // list
+//        ListView lvWeight = (ListView) findViewById(R.id.weight_list);
+//        weightCursorAdapter = new WeightCursorAdapter(this, listCursor);
+//        lvWeight.setAdapter(weightCursorAdapter);
+//        lvWeight.setOnItemLongClickListener(new OnWeightItemLongClickListener());
 
         // chart
         chart = new WeightChart(this, findViewById(R.id.weight_chart),
@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         dbWrapper.deletePoint(id);
         chart.addData(dbWrapper);
         //  Обновляем курсор, чтобы обновился список
-        Cursor c = dbWrapper.getCurrentCursor();
-        weightCursorAdapter.changeCursor(c);
+//        Cursor c = dbWrapper.getCurrentCursor();
+//        weightCursorAdapter.changeCursor(c);
     }
 
     @Override
@@ -137,9 +137,9 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
                 long newPointId = dbWrapper.addPoint(timestamp, weight);
 
 
-                Cursor cursor = dbWrapper.getCurrentCursor();
+//                Cursor cursor = dbWrapper.getCurrentCursor();
 
-                weightCursorAdapter.changeCursor(cursor);
+//                weightCursorAdapter.changeCursor(cursor);
                 chart.addData(dbWrapper);
             } else {
                 Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();

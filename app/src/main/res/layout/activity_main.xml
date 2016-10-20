@@ -52,13 +52,13 @@
             android:layout_width="match_parent"
             android:layout_height="250dp" />
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/weight_list"
-            >
+        <!--<ListView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/weight_list"-->
+    d        <!--&gt;-->
 
-        </ListView>
+        <!--</ListView>-->
     </LinearLayout>
 
 
