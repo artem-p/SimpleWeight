@@ -81,6 +81,9 @@ public class WeightChart {
         xAxis.setValueFormatter(timeAxisFormatter);
         YAxis rightYAxis = chart.getAxisRight();
         rightYAxis.setEnabled(false);
+        YAxis leftYAxis = chart.getAxisLeft();
+        leftYAxis.setGranularity(1f);
+        leftYAxis.setGranularityEnabled(true);
         Legend legend = chart.getLegend();
         legend.setEnabled(false);
     }
