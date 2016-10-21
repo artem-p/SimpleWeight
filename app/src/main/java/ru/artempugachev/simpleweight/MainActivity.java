@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        etWeightInput = (EditText) findViewById(R.id.input_weight);
-        saveButton = (Button) findViewById(R.id.btnSave);
-        saveButton.setOnClickListener(new SaveOnClickListener());
+//        etWeightInput = (EditText) findViewById(R.id.input_weight);
+//        saveButton = (Button) findViewById(R.id.btnSave);
+//        saveButton.setOnClickListener(new SaveOnClickListener());
 
 
 //        Cursor listCursor = dbWrapper.getCurrentCursor();
