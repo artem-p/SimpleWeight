@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     private Entry selectedEntry;        //  selected (highlightedt) entry on chart
     private WeightChart chart;
     private DBWrapper dbWrapper;
+    private FloatingActionButton addWeightFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,13 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        addWeightFab = (FloatingActionButton) findViewById(R.id.addWeightFab);
+        addWeightFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "fab", Toast.LENGTH_SHORT).show();
+            }
+        });
 //        etWeightInput = (EditText) findViewById(R.id.input_weight);
 //        saveButton = (Button) findViewById(R.id.btnSave);
 //        saveButton.setOnClickListener(new SaveOnClickListener());
