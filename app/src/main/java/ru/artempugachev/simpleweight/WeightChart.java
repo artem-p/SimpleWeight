@@ -75,8 +75,8 @@ public class WeightChart {
         xAxis.setDrawGridLines(false);
         xAxis.setTextColor(Color.rgb(255, 192, 56));
         xAxis.setCenterAxisLabels(true);
-//            xAxis.setGranularityEnabled(true);
-//        xAxis.setGranularity(1f);
+//        xAxis.setGranularityEnabled(true);
+//        xAxis.setGranularity(60*1000*60*2);
         timeAxisFormatter = new TimeAxisFormatter(0L);
         xAxis.setValueFormatter(timeAxisFormatter);
         YAxis rightYAxis = chart.getAxisRight();
@@ -198,7 +198,6 @@ class TimeAxisFormatter implements AxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        // todo учитывать labelCount. Если количество дней меньше количества меток, по другому форматировать
         // Choose label format depending of min and max time value in viewport
         if(minMaxTimeDelta < 60*1000) {
             //  less than a minute
