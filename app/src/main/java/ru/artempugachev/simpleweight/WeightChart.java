@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.renderer.LineChartRenderer;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -67,23 +68,32 @@ public class WeightChart {
         chart.setDrawGridBackground(false);
         chart.setHighlightPerDragEnabled(true);
         // set an alternative background color
-        chart.setBackgroundColor(Color.WHITE);
+        chart.setBackgroundColor(ContextCompat.getColor(context, R.color.accent));
         chart.setOnChartValueSelectedListener(onChartValueSelectedListener);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-        xAxis.setTextColor(Color.rgb(255, 192, 56));
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setAxisLineColor(Color.WHITE);
+        xAxis.setAxisLineWidth(2f);
         xAxis.setCenterAxisLabels(true);
 //        xAxis.setGranularityEnabled(true);
 //        xAxis.setGranularity(60*1000*60*2);
         timeAxisFormatter = new TimeAxisFormatter(0L);
         xAxis.setValueFormatter(timeAxisFormatter);
+
         YAxis rightYAxis = chart.getAxisRight();
         rightYAxis.setEnabled(false);
         YAxis leftYAxis = chart.getAxisLeft();
         leftYAxis.setGranularity(1f);
         leftYAxis.setGranularityEnabled(true);
+        leftYAxis.setAxisLineWidth(2f);
+        leftYAxis.setAxisLineColor(ContextCompat.getColor(context, R.color.accent));
+        leftYAxis.setGridColor(Color.WHITE);
+        leftYAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftYAxis.setTextColor(Color.WHITE);
+
         Legend legend = chart.getLegend();
         legend.setEnabled(false);
     }
@@ -118,11 +128,12 @@ public class WeightChart {
         }
 
         dataSet = new LineDataSet(entries, weightLabel);
-        dataSet.setColor(ContextCompat.getColor(context, R.color.accent));
-        dataSet.setLineWidth(2.5f);
-        dataSet.setCircleColor(ContextCompat.getColor(context, R.color.accent));
+        dataSet.setColor(Color.WHITE);
+        dataSet.setLineWidth(3f);
+        dataSet.setCircleColor(Color.WHITE);
         dataSet.setCircleRadius(5f);
-        dataSet.setFillColor(ContextCompat.getColor(context, R.color.accent));
+        dataSet.setCircleHoleRadius(3f);
+        dataSet.setCircleColorHole(ContextCompat.getColor(context, R.color.accent));
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSet.setDrawValues(false);
         dataSet.setValueTextSize(10f);
@@ -136,6 +147,8 @@ public class WeightChart {
                 return String.valueOf(value);
             }
         });
+        dataSet.setValueTextColor(Color.WHITE);
+
         weightData = new LineData(dataSet);
         chart.setData(weightData);
         chart.invalidate();
