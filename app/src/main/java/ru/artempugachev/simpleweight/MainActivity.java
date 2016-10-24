@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         addWeightFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "fab", Toast.LENGTH_SHORT).show();
+                showAddWeightDialog();
             }
         });
 //        etWeightInput = (EditText) findViewById(R.id.input_weight);
@@ -181,5 +181,9 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         });
         adb.show();
 
+    }
+
+    private void showAddWeightDialog() {
+        // todo android design dialog
     }
 }
