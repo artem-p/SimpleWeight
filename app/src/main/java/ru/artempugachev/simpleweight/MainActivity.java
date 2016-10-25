@@ -9,12 +9,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         //  Удаляем строку с айди из базы
         AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
         adb.setTitle(R.string.delete_question);
-        adb.setMessage("Are you sure you want to delete this record?");
+        adb.setMessage(R.string.delete_weight_message);
         adb.setNegativeButton(R.string.cancel, null);
         adb.setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {
             @Override
@@ -184,6 +186,18 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     }
 
     private void showAddWeightDialog() {
-        // todo android design dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.input_weight_title)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.save, new AlertDialog.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+        // todo http://stackoverflow.com/questions/2795300/how-to-implement-a-custom-alertdialog-view
+        // 2 ответ
+        builder.show();
     }
 }

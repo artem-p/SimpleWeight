@@ -8,8 +8,10 @@
     <string name="kg">kg</string>
     <string name="save">Save</string>
     <string name="wrong_weight">Wrong weight</string>
+    <string name="delete_weight_message">Are you sure you want to delete this record?</string>
     <string name="delete_question">Delete?</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="action_delete">Delete weight</string>
+    <string name="input_weight_title">Input weight</string>
 </resources>
