@@ -187,8 +187,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
     private void showAddWeightDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.input_weight_title)
-                .setNegativeButton(R.string.cancel, null)
+        builder.setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.save, new AlertDialog.OnClickListener(){
 
                     @Override
@@ -196,8 +195,11 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
                     }
                 });
-        // todo http://stackoverflow.com/questions/2795300/how-to-implement-a-custom-alertdialog-view
-        // 2 ответ
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.input_weigt_dialog, null);
+        builder.setView(dialogLayout);
+
         builder.show();
     }
 }
