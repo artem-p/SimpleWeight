@@ -30,7 +30,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 public class MainActivity extends AppCompatActivity implements OnChartValueSelectedListener {
     private Toolbar toolbar;
-    private EditText etWeightInput;
     private Button saveButton;
 //    private WeightCursorAdapter weightCursorAdapter;
     private MenuItem deleteActionBtn;
@@ -135,29 +134,29 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
     }
 
-    private class SaveOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            float weight;
-            String sWeight = String.valueOf(etWeightInput.getText());
-
-            if(!sWeight.equals("")) {
-                long timestamp = System.currentTimeMillis();
-                weight = Float.parseFloat(sWeight);
-                //  todo async task для записи
-                long newPointId = dbWrapper.addPoint(timestamp, weight);
-
-
-//                Cursor cursor = dbWrapper.getCurrentCursor();
-
-//                weightCursorAdapter.changeCursor(cursor);
-                chart.addData(dbWrapper);
-            } else {
-                Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
+//    private class SaveOnClickListener implements View.OnClickListener {
+//        @Override
+//        public void onClick(View view) {
+//            float weight;
+//            String sWeight = String.valueOf(etWeightInput.getText());
+//
+//            if(!sWeight.equals("")) {
+//                long timestamp = System.currentTimeMillis();
+//                weight = Float.parseFloat(sWeight);
+//                //  todo async task для записи
+//                long newPointId = dbWrapper.addPoint(timestamp, weight);
+//
+//
+////                Cursor cursor = dbWrapper.getCurrentCursor();
+//
+////                weightCursorAdapter.changeCursor(cursor);
+//                chart.addData(dbWrapper);
+//            } else {
+//                Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//    }
 
 
     private class OnWeightItemLongClickListener implements AdapterView.OnItemLongClickListener {
@@ -192,7 +191,19 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        EditText etWeightInput = (EditText) ((AlertDialog) dialogInterface).findViewById(R.id.input_weight);
+                        float weight;
+                        String sWeight = String.valueOf(etWeightInput.getText());
 
+                        if(!sWeight.equals("")) {
+                            long timestamp = System.currentTimeMillis();
+                            weight = Float.parseFloat(sWeight);
+                            //  todo async task для записи
+                            long newPointId = dbWrapper.addPoint(timestamp, weight);
+                            chart.addData(dbWrapper);
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.wrong_weight, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
