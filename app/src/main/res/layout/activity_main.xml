@@ -38,6 +38,21 @@
             android:layout_marginTop="?attr/actionBarSize"
             android:layout_height="250dp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="31 окт 2016 г"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:text="75.3 кг"
+            />
+
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,10 +64,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textAlignment="center"
                     android:text="Неделя" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     android:layout_weight="1"
                     android:text="-1.5 кг" />
             </TableRow>
@@ -62,11 +79,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     android:layout_weight="1"
                     android:text="Месяц" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     android:layout_weight="1"
                     android:text="-3 кг" />
             </TableRow>
