@@ -96,6 +96,8 @@ public class WeightChart {
 
         Legend legend = chart.getLegend();
         legend.setEnabled(false);
+
+        chart.setExtraOffsets(10f, 10f, 20f, 20f);
     }
 
 
