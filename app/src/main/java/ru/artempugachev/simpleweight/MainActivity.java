@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
         selTime = (TextView) findViewById(R.id.selTime);
         selWeight = (TextView) findViewById(R.id.selWeight);
+
     }
 
     @Override
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         getMenuInflater().inflate(R.menu.menu_main, menu);
         deleteActionBtn = menu.findItem(R.id.action_delete);
         deleteActionBtn.setVisible(false);
+        chart.highlightLastPoint(); // we use action button when highlighting points, so do it after button created
         return true;
     }
 

@@ -43,6 +43,7 @@ public class WeightChart {
     public final static long TIME_CONSTANT = 1476600000000L; //1476696720644
     TimeAxisFormatter timeAxisFormatter;
 
+    private long lastTimestamp = 0;
 
     public WeightChart(Context context, View chartView, int markerLayoutId, String weightLabel,
                        OnChartValueSelectedListener onChartValueSelectedListener) {
@@ -122,6 +123,8 @@ public class WeightChart {
                 Long timestampDelta = timestamp - TIME_CONSTANT;
                 float chartTimestamp = timestampDelta.floatValue();
                 entries.add(new Entry(chartTimestamp, weight, id));
+
+                lastTimestamp = timestamp;      // remember last timestamp value, uses to highlight last point when start app
             }
         }
         finally {
@@ -189,6 +192,12 @@ public class WeightChart {
 
     public void clearSelection() {
         chart.highlightValues(null);
+    }
+
+    public void highlightLastPoint() {
+        if(lastTimestamp != 0) {
+            chart.highlightValue(lastTimestamp, 0);
+        }
     }
 }
 
