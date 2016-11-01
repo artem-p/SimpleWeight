@@ -39,19 +39,19 @@
             android:layout_height="250dp" />
 
         <TextView
+            android:id="@+id/selTime"
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="31 окт 2016 г"
             />
 
         <TextView
+            android:id="@+id/selWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="24sp"
-            android:text="75.3 кг"
             />
 
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"

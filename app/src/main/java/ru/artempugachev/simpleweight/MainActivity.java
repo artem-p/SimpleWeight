@@ -28,6 +28,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity implements OnChartValueSelectedListener {
     private Toolbar toolbar;
     private Button saveButton;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
     private WeightChart chart;
     private DBWrapper dbWrapper;
     private FloatingActionButton addWeightFab;
+    private TextView selTime;
+    private TextView selWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
         chart.addData(dbWrapper);
 
+        selTime = (TextView) findViewById(R.id.selTime);
+        selWeight = (TextView) findViewById(R.id.selWeight);
     }
 
     @Override
@@ -123,14 +131,27 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM HH:mm", Locale.getDefault());
         deleteActionBtn.setVisible(true);
         selectedEntry = e;
+
+        float weight = e.getY();
+        selWeight.setText(String.valueOf(weight));
+
+        float timestamp = e.getX();
+        long trueTimestamp = (long) timestamp + WeightChart.TIME_CONSTANT;
+        String time = format.format(new Date(trueTimestamp));
+
+        selTime.setText(time);
     }
 
     @Override
     public void onNothingSelected() {
         deleteActionBtn.setVisible(false);
         selectedEntry = null;
+
+        selTime.setText("");
+        selWeight.setText("");
 
     }
 
