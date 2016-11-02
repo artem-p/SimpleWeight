@@ -5,10 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-/**
- * Created by artem on 11.10.16.
- */
-
 public class DBWrapper {
     // wrapper for db stuff
     private WeightDBOpenHelper dbHelper;
