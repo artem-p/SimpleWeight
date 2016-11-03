@@ -68,9 +68,22 @@ public class DBWrapper {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
+        db.close();
     }
 
-    public void getRecordsAfter(long timestamp) {
+    public Cursor getRecordsAfter(long timestamp) {
         //  get all records after timestamp
+        String selection = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " >= ?";
+        String[] selectionArgs = { String.valueOf(timestamp) };
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                WeightDBContract.WeightEntry.TABLE_NAME,
+                WEIGHT_PROJECTION, selection, selectionArgs, null, null, DESC_SORT_ORDER
+        );
+
+        return cursor;
+
+
     }
 }
