@@ -15,8 +15,8 @@ public class DBWrapper {
             WeightDBContract.WeightEntry.COLUMN_NAME_WEIGHT
     };
 
-    private final String WEIGHT_LIST_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
-    private final String WEIGHT_CHART_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " ASC";
+    private final String DESC_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " DESC";
+    private final String ASC_SORT_ORDER = WeightDBContract.WeightEntry.COLUMN_NAME_TIME + " ASC";
 
     public DBWrapper(Context context) {
         this.context = context;
@@ -37,7 +37,7 @@ public class DBWrapper {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 WeightDBContract.WeightEntry.TABLE_NAME,
-                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_LIST_SORT_ORDER
+                WEIGHT_PROJECTION, null, null, null, null, DESC_SORT_ORDER
         );
 
         return cursor;
@@ -47,7 +47,7 @@ public class DBWrapper {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 WeightDBContract.WeightEntry.TABLE_NAME,
-                WEIGHT_PROJECTION, null, null, null, null, WEIGHT_CHART_SORT_ORDER
+                WEIGHT_PROJECTION, null, null, null, null, ASC_SORT_ORDER
         );
 
         return cursor;
@@ -68,5 +68,9 @@ public class DBWrapper {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         db.delete(WeightDBContract.WeightEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
+    public void getRecordsAfter(long timestamp) {
+        //  get all records after timestamp
     }
 }
