@@ -14,4 +14,7 @@
     <string name="ok">Ok</string>
     <string name="action_delete">Delete weight</string>
     <string name="input_weight_title">Input weight</string>
+    <string name="overview">Overview</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
 </resources>
